@@ -2,23 +2,24 @@ package test;
 
 import data.AccountData;
 import data.TaskData;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+import util.RandomDataUtil;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class VikunjaTest extends TestBase {
-    @org.junit.Test
-    public void testLogin() {
+    @Test
+    public void test1_Login() {
         AccountData accountData = new AccountData("demo", "demo");
         getApp().getNavigationHelper().openHomePage();
         getApp().maximizeWindow();
         getApp().getLoginHelper().login(accountData);
     }
 
-    @org.junit.Test
-    public void testAddTask() {
-        AccountData accountData = new AccountData("demo", "demo");
-        getApp().getNavigationHelper().openHomePage();
-        getApp().maximizeWindow();
-        getApp().getLoginHelper().login(accountData);
-        TaskData taskData = new TaskData("Новая задача");
+    @Test
+    public void test2_AddTask() {
+        TaskData taskData = new TaskData(RandomDataUtil.generateRandomText());
         getApp().getTaskHelper().addTask(taskData);
     }
 }

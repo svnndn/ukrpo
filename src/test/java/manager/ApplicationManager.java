@@ -10,7 +10,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.time.Duration;
 
-public class ApplicationManager {
+public class ApplicationManager implements AutoCloseable {
     private WebDriver driver;
     private JavascriptExecutor js;
 
@@ -21,17 +21,37 @@ public class ApplicationManager {
     @Getter
     private TaskHelper taskHelper;
 
-    public ApplicationManager() {
+    private static ApplicationManager instance;
+
+    private ApplicationManager() {
         driver = new FirefoxDriver();
         js = (JavascriptExecutor) driver;
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().window().maximize();
+
         loginHelper = new LoginHelper(driver);
         taskHelper = new TaskHelper(driver);
         navigationHelper = new NavigationHelper(driver, "https://try.vikunja.io/");
+        navigationHelper.openHomePage();
+    }
+
+    public static synchronized ApplicationManager getInstance() {
+        if (instance == null) {
+            instance = new ApplicationManager();
+        }
+        return instance;
     }
 
     public void stop() {
-        driver.quit();
+        if (instance != null) {
+            driver.quit();
+            instance = null;
+        }
+    }
+
+    @Override
+    public void close() {
+        stop();
     }
 
     public void maximizeWindow() {
