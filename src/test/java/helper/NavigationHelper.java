@@ -1,16 +1,17 @@
 package helper;
 
-import org.openqa.selenium.WebDriver;
+import manager.ApplicationManager;
 
 public class NavigationHelper extends HelperBase {
     private final String baseUrl;
 
-    public NavigationHelper(WebDriver driver, String url) {
-        super(driver);
+    public NavigationHelper(ApplicationManager manager, String url) {
+        super(manager);
         this.baseUrl = url;
     }
 
     public void openHomePage() {
         driver.get(baseUrl);
+        driver.manage().window().maximize();
     }
 }

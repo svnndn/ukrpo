@@ -3,7 +3,6 @@ package manager;
 import helper.LoginHelper;
 import helper.NavigationHelper;
 import helper.TaskHelper;
-import lombok.Getter;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -14,38 +13,36 @@ public class ApplicationManager implements AutoCloseable {
     private WebDriver driver;
     private JavascriptExecutor js;
 
-    @Getter
     private NavigationHelper navigationHelper;
-    @Getter
     private LoginHelper loginHelper;
-    @Getter
     private TaskHelper taskHelper;
 
-    private static ApplicationManager instance;
+    private static final ThreadLocal<ApplicationManager> instance = ThreadLocal.withInitial(() -> null);
 
     private ApplicationManager() {
         driver = new FirefoxDriver();
         js = (JavascriptExecutor) driver;
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().window().maximize();
 
-        loginHelper = new LoginHelper(driver);
-        taskHelper = new TaskHelper(driver);
-        navigationHelper = new NavigationHelper(driver, "https://try.vikunja.io/");
-        navigationHelper.openHomePage();
+        loginHelper = new LoginHelper(this);
+        taskHelper = new TaskHelper(this);
+        navigationHelper = new NavigationHelper(this, "https://try.vikunja.io/");
     }
 
-    public static synchronized ApplicationManager getInstance() {
-        if (instance == null) {
-            instance = new ApplicationManager();
+
+    public static ApplicationManager getInstance() {
+        if (instance.get() == null) {
+            ApplicationManager manager = new ApplicationManager();
+            instance.set(manager);
+            manager.getNavigationHelper().openHomePage();
         }
-        return instance;
+        return instance.get();
     }
 
     public void stop() {
-        if (instance != null) {
+        try {
             driver.quit();
-            instance = null;
+        } catch (Exception ignored) {
         }
     }
 
@@ -54,7 +51,43 @@ public class ApplicationManager implements AutoCloseable {
         stop();
     }
 
-    public void maximizeWindow() {
-        driver.manage().window().maximize();
+    public WebDriver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public JavascriptExecutor getJs() {
+        return js;
+    }
+
+    public void setJs(JavascriptExecutor js) {
+        this.js = js;
+    }
+
+    public NavigationHelper getNavigationHelper() {
+        return navigationHelper;
+    }
+
+    public void setNavigationHelper(NavigationHelper navigationHelper) {
+        this.navigationHelper = navigationHelper;
+    }
+
+    public LoginHelper getLoginHelper() {
+        return loginHelper;
+    }
+
+    public void setLoginHelper(LoginHelper loginHelper) {
+        this.loginHelper = loginHelper;
+    }
+
+    public TaskHelper getTaskHelper() {
+        return taskHelper;
+    }
+
+    public void setTaskHelper(TaskHelper taskHelper) {
+        this.taskHelper = taskHelper;
     }
 }

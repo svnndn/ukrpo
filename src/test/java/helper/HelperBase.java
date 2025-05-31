@@ -1,22 +1,37 @@
 package helper;
 
 import manager.ApplicationManager;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class HelperBase {
     protected WebDriver driver;
+    protected ApplicationManager app;
     private Map<String, Object> vars;
+    protected JavascriptExecutor js;
     private static boolean acceptNextAlert = true;
 
-    public HelperBase(WebDriver driver) {
-        this.driver = driver;
+    public HelperBase(ApplicationManager manager) {
+        this.app = manager;
+        this.driver = manager.getDriver();
+        this.js = (JavascriptExecutor) driver;
     }
+
+    public boolean isElementVisible(By locator) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
 
     public boolean isElementPresent(By by) {
         try {

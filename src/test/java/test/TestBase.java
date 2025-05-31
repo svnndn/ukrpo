@@ -1,9 +1,13 @@
 package test;
 
 import manager.ApplicationManager;
+import org.junit.Before;
 
 public class TestBase {
-    protected ApplicationManager getApp() {
-        return ApplicationManager.getInstance();
+    protected static ApplicationManager app;
+
+    @Before
+    public void setUp() {
+        app = ApplicationManager.getInstance();
     }
 }
