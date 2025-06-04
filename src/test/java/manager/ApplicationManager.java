@@ -2,6 +2,7 @@ package manager;
 
 import helper.LoginHelper;
 import helper.NavigationHelper;
+import helper.ProjectHelper;
 import helper.TaskHelper;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -16,6 +17,7 @@ public class ApplicationManager implements AutoCloseable {
     private NavigationHelper navigationHelper;
     private LoginHelper loginHelper;
     private TaskHelper taskHelper;
+    private ProjectHelper projectHelper;
 
     private static final ThreadLocal<ApplicationManager> instance = ThreadLocal.withInitial(() -> null);
 
@@ -27,6 +29,7 @@ public class ApplicationManager implements AutoCloseable {
         loginHelper = new LoginHelper(this);
         taskHelper = new TaskHelper(this);
         navigationHelper = new NavigationHelper(this, "https://try.vikunja.io/");
+        projectHelper = new ProjectHelper(this);
     }
 
 
@@ -89,5 +92,13 @@ public class ApplicationManager implements AutoCloseable {
 
     public void setTaskHelper(TaskHelper taskHelper) {
         this.taskHelper = taskHelper;
+    }
+
+    public ProjectHelper getProjectHelper() {
+        return projectHelper;
+    }
+
+    public void setProjectHelper(ProjectHelper projectHelper) {
+        this.projectHelper = projectHelper;
     }
 }

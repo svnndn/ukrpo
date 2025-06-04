@@ -22,7 +22,10 @@ public class TaskHelper extends HelperBase {
         WebElement taskField = wait.until(ExpectedConditions.elementToBeClickable(TASK_ADD_FIELD_BY));
         taskField.click();
         driver.findElement(TASK_ADD_FIELD_BY).sendKeys(taskData.getTaskName());
-        driver.findElement(ADD_BUTTON).click();
+        WebElement addButton = wait.until(ExpectedConditions.elementToBeClickable(ADD_BUTTON));
+        addButton.click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//a[@class='task-link' and text()='%s']", taskData.getTaskName()))));
     }
 
     public void editTask(TaskData taskData) {
