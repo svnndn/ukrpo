@@ -18,7 +18,7 @@ import java.io.File;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-public class ProjectParameterizedTest extends TestBase {
+public class ProjectParameterizedTest extends AuthBase {
 
     private final TestProjectData projectData;
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <baseUrl>https://try.vikunja.io/</baseUrl>
+    <credentials>
+        <valid>
+            <username>demo</username>
+            <password>demo</password>
+        </valid>
+        <invalid>
+            <username>wrongusername</username>
+            <password>wrongpassword</password>
+        </invalid>
+    </credentials>
+</config>

@@ -7,6 +7,7 @@ import helper.TaskHelper;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import util.Settings;
 
 import java.time.Duration;
 
@@ -28,7 +29,7 @@ public class ApplicationManager implements AutoCloseable {
 
         loginHelper = new LoginHelper(this);
         taskHelper = new TaskHelper(this);
-        navigationHelper = new NavigationHelper(this, "https://try.vikunja.io/");
+        navigationHelper = new NavigationHelper(this, Settings.getInstance().getBaseUrl());
         projectHelper = new ProjectHelper(this);
     }
 
