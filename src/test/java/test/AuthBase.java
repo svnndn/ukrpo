@@ -12,9 +12,12 @@ public class AuthBase extends TestBase {
     public void setUp() {
         app = ApplicationManager.getInstance();
         AccountData accountData = new AccountData(Settings.getInstance().getValidUsername(), Settings.getInstance().getValidPassword());
+        System.out.println("Account username: " + accountData.getUsername());
+        System.out.println("Account password: " + accountData.getPassword());
         app.getNavigationHelper().openHomePage();
         app.getLoginHelper().login(accountData);
 
         Assert.assertTrue(app.getLoginHelper().isElementVisible(By.xpath("//*[contains(@id, 'task-add')]")));
+        System.out.println("Успешный вход");
     }
 }
